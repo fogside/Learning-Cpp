@@ -18,6 +18,7 @@ istream &operator>>(istream &in, Bus &b) {
     in >> b.driver_surname;
     in >> b.driver_initials;
     in >> b.route_number;
+    cout<<b<<endl;
     return in;
 }
 
