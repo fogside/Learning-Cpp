@@ -19,7 +19,7 @@ struct Bus
     string driver_initials;
     int route_number;
 
-    Bus(){};
+    Bus(): driver_surname(""), driver_initials(""), route_number(-1), bus_number(-1) {};
     Bus(int _bus_number, string _driver_surname, string _driver_initials, int _route_number):
             bus_number(_bus_number), driver_surname(_driver_surname),
             driver_initials(_driver_initials), route_number(_route_number) {};
@@ -35,12 +35,10 @@ class BusDB
     list <Bus> routeList;
 
 public:
-    static BusDB createFromFile(const string &pathToFile); // для ввода из файла
-    static BusDB createFromCmd(); // для ввода с клавиатуры
     BusDB(){}; // для создания пустой базы
     BusDB(const BusDB &other);
 
-    static BusDB readDBfromStream(istream &strm);
+    static void readDBfromStream(istream &strm, BusDB & db);
 
     void BusToRoute(int bus_num); // вводится номер автобуса, выезжающего на маршрут;
     void BusToPark(int bus_num); // вводится номер автобуса, въезжающего в парк;

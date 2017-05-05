@@ -33,7 +33,7 @@ void createDBfromFile(BusDB & db)
         throw FileNotFoundException(filename);
     }
 
-    db = BusDB::readDBfromStream(infile);
+    BusDB::readDBfromStream(infile, db);
 }
 
 void createDBfromCmd(BusDB & db)
@@ -41,9 +41,10 @@ void createDBfromCmd(BusDB & db)
     cout << "Type lines in format:" << endl;
     cout << "bus_number driver_initials driver_surname route_number" << endl;
     cout << "(you can use as delimeters both space and tab)" << endl;
+    cout << "Type # to end input" << endl;
     cout << "----------------------------------" << endl;
 
-    db = BusDB::readDBfromStream(cin);
+    BusDB::readDBfromStream(cin, db);
 }
 
 void BusToRoute(BusDB &db)
@@ -73,7 +74,6 @@ enum class Action {
     EXIT
 };
 
-
 int main() {
 
     help();
@@ -85,7 +85,13 @@ int main() {
             cout << "Write smth again if you want or 7 exit" << endl;
 
             string action_code;
+
+            cout<<"EOF: "<<cin.eof()<<" BAD: "<<cin.bad()<<" FAIL: "<<cin.fail()<<endl;
+            cin.clear();
             cin >> action_code;
+
+            if(action_code.empty())
+                continue;
 
             Action action = static_cast<Action>(stoi(action_code));
 

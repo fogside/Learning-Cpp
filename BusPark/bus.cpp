@@ -13,7 +13,9 @@ bool Bus::operator<(Bus &b) {
     return b.route_number < route_number;
 }
 
+
 istream &operator>>(istream &in, Bus &b) {
+
     in >> b.bus_number;
     in >> b.driver_surname;
     in >> b.driver_initials;
@@ -95,17 +97,30 @@ BusDB::BusDB(const BusDB &other) {
     parkList = other.parkList;
 }
 
-BusDB BusDB::readDBfromStream(istream &infile) {
 
-    BusDB db;
-    while (!infile.eof()) {
-        Bus b;
-        infile >> b;
-        db.parkList.push_back(b);
+void BusDB::readDBfromStream(istream &infile, BusDB & db) {
+
+    string s;
+    Bus b;
+    std::size_t found;
+    while (std::getline(infile, s)) {
+        if(s=="")
+            continue;
+
+        found = s.find('#');
+        if (found==std::string::npos) {
+            stringstream(s) >> b;
+            db.parkList.push_back(b);
+        }
+        else {
+            if (found > 0) {
+                stringstream(s.substr(0, found)) >> b;
+                db.parkList.push_back(b);
+            }
+            break;
+        }
     }
-    return db;
 }
-
 
 
 
